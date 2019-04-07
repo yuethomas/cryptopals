@@ -1,5 +1,6 @@
 """S1C4. Given a file, determine which line has been encrypted."""
 
+import binascii
 from set_1 import single_byte_xor_cipher
 
 
@@ -8,9 +9,9 @@ def single_byte_xor_detection(list_of_encrypted_text):
   for line in list_of_encrypted_text:
     try:
       decryption = single_byte_xor_cipher.single_byte_xor_cipher(
-          line.strip())
-      if decryption:
-        print decryption
+          bytearray(binascii.unhexlify(line.strip())))
+      if decryption[1]:
+        print(decryption[1].decode('ascii'))
     except UnicodeDecodeError:
       continue
 

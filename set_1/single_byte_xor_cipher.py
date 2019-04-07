@@ -12,10 +12,8 @@ _EN_FREQ_DIST = [x / 0.1918182 for x in [
     0.0145984, 0.0007836, 0.1918182]]
 
 
-def single_byte_xor_cipher(hexstring):
-  """Decodes a hex-encoded string as a single byte XOR cipher."""
-
-  bytestring = binascii.unhexlify(hexstring)
+def single_byte_xor_cipher(bytestring):
+  """Decodes a bytearray as a single byte XOR cipher."""
   cipher_scores = []
 
   for cipher in range(128):
@@ -23,7 +21,7 @@ def single_byte_xor_cipher(hexstring):
     discarded = 0
 
     for original_byte in bytestring:
-      byte = ord(original_byte) ^ cipher
+      byte = original_byte ^ cipher
       if byte >= 65 and byte <= 90:
         dist[byte - 65] += 1
 
@@ -39,7 +37,7 @@ def single_byte_xor_cipher(hexstring):
 
     # heuristic; discarded characters should not exceed 20% of the
     # entire string size.
-    if discarded > len(bytestring) / 5:
+    if discarded > len(bytestring) / 2:
       continue
 
     # calculate distribution, with most frequent element as 1
@@ -51,6 +49,6 @@ def single_byte_xor_cipher(hexstring):
   cipher_scores.sort(key=lambda c: c[1])
 
   for (cipher, score) in cipher_scores:
-    plaintext = bytearray(
-        [ord(b) ^ cipher for b in bytestring]).decode('ascii')
-    return (score, plaintext)
+    return (score, bytearray([b ^ cipher for b in bytestring]))
+
+  return (None, None)

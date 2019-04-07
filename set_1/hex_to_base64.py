@@ -33,7 +33,7 @@ def bytes_to_base64(byte_array):
 
   def _translate_6_bits(index):
     byte_ptr = index >> 3
-    byte_offset = index - byte_ptr << 3
+    byte_offset = index - (byte_ptr << 3)
     cur_byte = byte_array[byte_ptr]
     if byte_offset <= 2:
       return (cur_byte >> (2 - byte_offset)) & 63
