@@ -1,9 +1,9 @@
 """Tests for repeating_key_xor_decrypt."""
 
-import binascii
 import unittest
 
-from set_1 import c06_repeating_key_xor_decrypt as repeating_key_xor_decrypt
+from set_1 import (
+    c06_repeating_key_xor_decrypt as repeating_key_xor_decrypt)
 
 
 class TestRepeatingKeyXorDecrypt(unittest.TestCase):
@@ -15,8 +15,8 @@ class TestRepeatingKeyXorDecrypt(unittest.TestCase):
     input_str2 = bytearray(b'wokka wokka!!!')
     output = 37
     self.assertEqual(
-      repeating_key_xor_decrypt.hamming(input_str1, input_str2),
-      output)
+        repeating_key_xor_decrypt.hamming(input_str1, input_str2),
+        output)
 
 
 if __name__ == '__main__':

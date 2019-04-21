@@ -20,7 +20,7 @@ def repeating_key_xor_decrypt(ciphertext):
                         hamming(fragment2, fragment3) +
                         hamming(fragment3, fragment4)) / 3 / keysize
 
-    # print(keysize, avg_hamming_dist)
+    print(keysize, avg_hamming_dist)
 
   # Interleave into blocks.
   keysize = 29
@@ -30,24 +30,24 @@ def repeating_key_xor_decrypt(ciphertext):
     blocks[i % keysize].append(ciphertext[i])
 
   decrypted = [
-    single_byte_xor_cipher.single_byte_xor_cipher(
-        bytearray(blocks[i]))[1]
-    for i in range(keysize)
+      single_byte_xor_cipher.single_byte_xor_cipher(
+          bytearray(blocks[i]))[1]
+      for i in range(keysize)
   ]
 
   # Deinterleave.
   out_str = []
-  for l in range(len(decrypted[0])):
-    for i in range(keysize):
+  for i in range(len(decrypted[0])):
+    for j in range(keysize):
       try:
-        out_str.append(decrypted[i][l])
+        out_str.append(decrypted[j][i])
       except IndexError:
         pass
 
   print(bytearray(out_str).decode('ascii'))
 
 
-def hamming(b1, b2):
+def hamming(bytearray1, bytearray2):
   """Calculates the Hamming distance between two bytearrays.
 
   If the bytearrays are of different lengths, trim the longer one.
@@ -63,11 +63,11 @@ def hamming(b1, b2):
     return one_bits
 
   return sum([_byte_hamming(byte1, byte2)
-              for (byte1, byte2) in zip(b1, b2)])
+              for (byte1, byte2) in zip(bytearray1, bytearray2)])
 
 if __name__ == '__main__':
-  CIPHER_FILE = open('c06_repeating_key_xor_file', 'r')
-  base64_text = ''.join(
-    [line.strip() for line in CIPHER_FILE.readlines()])
-  CIPHER_FILE.close()
-  repeating_key_xor_decrypt(bytearray(base64.b64decode(base64_text)))
+  TEXT = ''.join([
+      line.strip()
+      for line in open('c06_repeating_key_xor_file', 'r')
+  ])
+  repeating_key_xor_decrypt(bytearray(base64.b64decode(TEXT)))

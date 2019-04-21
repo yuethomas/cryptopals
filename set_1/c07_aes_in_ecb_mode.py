@@ -4,23 +4,25 @@ import base64
 
 from cryptography.hazmat import backends
 from cryptography.hazmat.primitives import ciphers
+from cryptography.hazmat.primitives.ciphers import algorithms
+from cryptography.hazmat.primitives.ciphers import modes
 
-key = 'YELLOW SUBMARINE'.encode('ascii')
 
-def decrypt():
-  FILE = open('c07_aes_in_ecb_mode_file', 'r')
-  b64 = ''.join([line.strip() for line in FILE.readlines()])
-  FILE.close()
-
-  ciphertext = base64.b64decode(b64)
+def decrypt_aes_ecb(ciphertext, key):
+  """Decrypts the ciphertext in the file with known key."""
   cipher = ciphers.Cipher(
-      ciphers.algorithms.AES(key),
-      ciphers.modes.ECB(),
+      algorithms.AES(key),
+      modes.ECB(),
       backends.default_backend())
   decryptor = cipher.decryptor()
   plaintext = decryptor.update(ciphertext) + decryptor.finalize()
-  return plaintext
+  return plaintext.decode('ascii')
 
 
 if __name__ == '__main__':
-  print(decrypt())
+  CIPHERTEXT = base64.b64decode(''.join([
+      line.strip()
+      for line in open('c07_aes_in_ecb_mode_file', 'r')
+  ]))
+  KEY = 'YELLOW SUBMARINE'.encode('ascii')
+  print(decrypt_aes_ecb(CIPHERTEXT, KEY))

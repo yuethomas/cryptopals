@@ -17,7 +17,8 @@ class TestSingleByteXorCipher(unittest.TestCase):
         '393b3736'))
     output_str = 'Cooking MC\'s like a pound of bacon'
     self.assertEqual(
-        single_byte_xor_cipher.single_byte_xor_cipher(input_str)[1],
+        single_byte_xor_cipher.single_byte_xor_cipher(
+            input_str)[1].decode('ascii'),
         output_str)
 
 
