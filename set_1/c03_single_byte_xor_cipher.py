@@ -11,7 +11,7 @@ _EN_FREQ_DIST = [x / 0.1918182 for x in [
 
 
 def single_byte_xor_cipher(bytestring):
-  """Decodes a bytearray as a single byte XOR cipher."""
+  """Decodes bytes as a single byte XOR cipher."""
   cipher_scores = []
 
   for cipher in range(128):
@@ -47,6 +47,6 @@ def single_byte_xor_cipher(bytestring):
   cipher_scores.sort(key=lambda c: c[1])
 
   for (cipher, score) in cipher_scores:
-    return (score, bytearray([b ^ cipher for b in bytestring]))
+    return (score, bytes([b ^ cipher for b in bytestring]))
 
   return (None, None)

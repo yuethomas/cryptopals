@@ -31,7 +31,7 @@ def repeating_key_xor_decrypt(ciphertext):
 
   decrypted = [
       single_byte_xor_cipher.single_byte_xor_cipher(
-          bytearray(blocks[i]))[1]
+          bytes(blocks[i]))[1]
       for i in range(keysize)
   ]
 
@@ -44,13 +44,13 @@ def repeating_key_xor_decrypt(ciphertext):
       except IndexError:
         pass
 
-  print(bytearray(out_str).decode('ascii'))
+  print(bytes(out_str).decode('ascii'))
 
 
-def hamming(bytearray1, bytearray2):
-  """Calculates the Hamming distance between two bytearrays.
+def hamming(bytes1, bytes2):
+  """Calculates the Hamming distance between two bytes-es.
 
-  If the bytearrays are of different lengths, trim the longer one.
+  If the bytes-es are of different lengths, trim the longer one.
   """
 
   def _byte_hamming(byte1, byte2):
@@ -63,11 +63,11 @@ def hamming(bytearray1, bytearray2):
     return one_bits
 
   return sum([_byte_hamming(byte1, byte2)
-              for (byte1, byte2) in zip(bytearray1, bytearray2)])
+              for (byte1, byte2) in zip(bytes1, bytes2)])
 
 if __name__ == '__main__':
   TEXT = ''.join([
       line.strip()
       for line in open('c06_repeating_key_xor_file', 'r')
   ])
-  repeating_key_xor_decrypt(bytearray(base64.b64decode(TEXT)))
+  repeating_key_xor_decrypt(base64.b64decode(TEXT))

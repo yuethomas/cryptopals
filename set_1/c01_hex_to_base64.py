@@ -6,10 +6,10 @@ _BASE64_CHARS = ('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy'
 def hex_to_base64(hexstring):
   """Converts hex in string format to base64 in string format."""
 
-  return bytes_to_base64(hex_string_to_bytearray(hexstring))
+  return bytes_to_base64(hex_string_to_bytes(hexstring))
 
-def hex_string_to_bytearray(hexstring):
-  """Converts hex in string format to a bytearray."""
+def hex_string_to_bytes(hexstring):
+  """Converts hex in string format to a bytes object."""
 
   def _hex_nibble_to_value(nibble):
     char_val = ord(nibble)
@@ -21,34 +21,34 @@ def hex_string_to_bytearray(hexstring):
       return char_val - 87
     raise "invalid hex!"
 
-  return bytearray([
+  return bytes([
       _hex_nibble_to_value(hexstring[i]) * 16 +
       _hex_nibble_to_value(hexstring[i + 1])
       for i in range(0, len(hexstring), 2)
   ])
 
 
-def bytes_to_base64(byte_array):
-  """Converts a bytearray to its base64 representation."""
+def bytes_to_base64(bytestring):
+  """Converts a bytes object to its base64 representation."""
 
   def _translate_6_bits(index):
     byte_ptr = index >> 3
     byte_offset = index - (byte_ptr << 3)
-    cur_byte = byte_array[byte_ptr]
+    cur_byte = bytestring[byte_ptr]
     if byte_offset <= 2:
       return (cur_byte >> (2 - byte_offset)) & 63
 
-    if byte_ptr == len(byte_array) - 1:
+    if byte_ptr == len(bytestring) - 1:
       next_byte = 0
     else:
-      next_byte = byte_array[byte_ptr + 1]
+      next_byte = bytestring[byte_ptr + 1]
 
     shift_by = 8 - byte_offset
     return (((cur_byte & ((1<<shift_by) - 1)) << (byte_offset - 2)) +
             ((next_byte >> (shift_by + 2))))
 
   bit_pointer = 0
-  bit_len = len(byte_array) * 8
+  bit_len = len(bytestring) * 8
   out = ''
   while bit_pointer < bit_len:
     out += _BASE64_CHARS[_translate_6_bits(bit_pointer)]

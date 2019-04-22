@@ -8,7 +8,7 @@ def single_byte_xor_detection(line):
   """Determines if a line has been encrypted by a xor cipher."""
   try:
     decryption = single_byte_xor_cipher.single_byte_xor_cipher(
-        bytearray(binascii.unhexlify(line)))
+        binascii.unhexlify(line))
     if decryption[1]:
       print(decryption[1].decode('ascii'))
   except UnicodeDecodeError:

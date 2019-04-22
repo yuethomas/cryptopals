@@ -12,9 +12,9 @@ class TestSingleByteXorCipher(unittest.TestCase):
   def test_predefined_string(self):
     """The test specified by CryptoPals."""
 
-    input_str = bytearray(binascii.unhexlify(
+    input_str = binascii.unhexlify(
         '1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a'
-        '393b3736'))
+        '393b3736')
     output_str = 'Cooking MC\'s like a pound of bacon'
     self.assertEqual(
         single_byte_xor_cipher.single_byte_xor_cipher(
